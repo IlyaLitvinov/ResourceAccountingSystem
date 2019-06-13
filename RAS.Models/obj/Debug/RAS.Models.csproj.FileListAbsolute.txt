@@ -1,0 +1,14 @@
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\RAS.Models.dll.config
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\RAS.Models.dll
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\RAS.Models.pdb
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\EntityFramework.dll
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\EntityFramework.SqlServer.dll
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\EntityFramework.xml
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\EntityFramework.SqlServer.xml
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\obj\Debug\RAS.Models.csprojAssemblyReference.cache
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\obj\Debug\RAS.Models.csproj.CoreCompileInputs.cache
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\obj\Debug\RAS.Models.csproj.CopyComplete
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\obj\Debug\RAS.Models.dll
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\obj\Debug\RAS.Models.pdb
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\ru\EntityFramework.resources.dll
+D:\Users\Илья\Documents\Visual Studio 2017\Project\ResourceAccountingSystem\RAS.Models\bin\Debug\ru\EntityFramework.SqlServer.resources.dll

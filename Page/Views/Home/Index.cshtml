@@ -1,0 +1,633 @@
+﻿<!------------------------------ МОДАЛЬНЫЕ ОКНА ------------------------------->
+<!------- Редактирование данных дома ------->
+<div id="editHouseBlock" class="modal" tabindex="1" aria-hidden="true">
+    <table class="tableEdit">
+        <tr><td colspan="10"><p><b>Редактирование данных дома</b></p></td></tr>
+        <input type="hidden" id="editIdHouse" />
+        <tr><td><label>Адрес дома: </label></td><td><input class="inp" type="text" id="editAddress" /></td></tr>
+        <tr><td><label>ID счетчика: </label></td><td><input class="inp" type="number" id="editIDCounter" /></td></tr>
+        <br>
+        <tr><td colspan="10"><button id="editHouse" class="buttonTable" data-dismiss="modal">Сохранить</button></td></tr>
+        <br>
+    </table>
+</div>
+
+<!----- Редактирование данных счетчика ----->
+<div id="editCountBlock" class="modal" tabindex="1" aria-hidden="true">
+    <table class="tableEdit">
+        <tr><td colspan="10"><p><b>Редактирование данных счетчика</b></p></td></tr>
+        <input type="hidden" id="editIdCount" />
+        <tr><td><label>Серийный номер: </label></td><td><input class="inp" type="number" id="editSerialNumber" /></td></tr>
+        <tr><td><label>Показания счетчика: </label></td><td><input class="inp" type="number" id="editReadings" /></td></tr>
+        <br>
+        <tr><td colspan="10"><button id="editCount" class="buttonTable" data-dismiss="modal">Сохранить</button></td></tr>
+        <br>
+    </table>
+</div>
+
+<!--------- Добавление нового дома --------->
+<div id="createHouseBlock" class="modal" tabindex="1" aria-hidden="true">
+    <table class="tableEdit">
+        <tr><td colspan="10"><p><b>Добавление нового дома</b></p></td></tr>
+        <tr><td><label>Адрес дома: </label></td><td><input class="inp" type="text" id="addAddress" /><alert></alert></td></tr>
+        <tr><td><label>ID счетчика: </label></td><td><input class="inp" type="number" id="addIDCounter" /></td></tr>
+        <br>
+        <tr><td colspan="10"><button id="addHouse" class="buttonTable" data-dismiss="modal" disabled>Сохранить</button></td></tr>
+        <br>
+    </table>
+</div>
+
+<!------- Добавление нового счетчика ------->
+<div id="createCountBlock" class="modal" tabindex="1" aria-hidden="true">
+    <table class="tableEdit">
+        <tr><td colspan="10"><p><b>Добавление нового счетчика</b></p></td></tr>
+        <tr><td><label>Серийный номер: </label></td><td><input class="inp" type="number" id="addSerialNumber" /></td></tr>
+        <tr><td><label>Показания счетчика: </label></td><td><input class="inp" type="number" id="addReadings" /></td></tr>
+        <br>
+        <tr><td colspan="10"><button id="addCount" class="buttonTable" data-dismiss="modal">Сохранить</button></td></tr>
+        <br>
+    </table>
+</div>
+
+<!------------------------- ОСНОВНЫЕ ТАБЛИЦЫ СИСТЕМЫ --------------------------->
+<div id="tableBlock4" class="firstBlock"></div>
+<div id="tableBlock2"></div>
+<div id="tableBlock3"></div>
+<div id="tableBlock1"></div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        //*--------- ВЫПОЛНЕНИЕ ДЕЙСТВИЙ СРАЗУ ПОСЛЕ ЗАГРУЗКИ ДОКУМЕНТА ---------*
+        $(document).ready(function () {
+
+            //*-- переменные для функции check --*
+            var adressStat = 1;
+            var adress = undefined;
+
+            GetMinHouse();
+            GetMaxHouse();
+            GetAllHouses();
+            GetNullCounts();
+
+            $("#addAddress").change(function (event) {
+                check();
+            });
+
+            //*--- Обработка событий нажатия кнопок "Сохранить" ---*
+            $("#editHouse").click(function () {
+                EditHouse();
+                // выполняем очистку
+                $('#editAddress').val('');
+                $('#editIDCounter').val('');
+            });
+            $("#addHouse").click(function () {
+                AddHouse();
+                // выполняем очистку
+                $('#addAddress').val('');
+                $('#addIDCounter').val('');
+            });
+            $("#editCount").click(function () {
+                EditCount();
+                // выполняем очистку
+                $('#editSerialNumber').val('');
+                $('#editReadings').val('');
+            });
+            $("#addCount").click(function () {
+                AddCount();
+                // выполняем очистку
+                $('#addSerialNumber').val('');
+                $('#addReadings').val('');
+            });
+        });
+
+
+
+        //*--------------------- ОБРАБОТЧИКИ НАЖАТИЯ КНОПОК В ТАБЛИЦАХ --------------------*
+
+
+
+
+        // *------ Обработчик нажатия кнопки редактирования счетчика -------*
+        function EditItemCount(el) {
+            // получаем id редактируемого объекта
+            var id = $(el).attr('data-item');
+            if (id != '') { // проверка не обязательна
+                GetCountEdit(id);
+            }
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *-------- Обработчик нажатия кнопки редактирования дома ---------*
+        function EditItem(el) {
+            // получаем id редактируемого объекта
+            var id = $(el).attr('data-item');
+            GetHouseEdit(id);
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *----------- Обработчик нажатия кнопки удаления дома ------------*
+        function DeleteItem(el) {
+            // получаем id удаляемого объекта
+            var id = $(el).attr('data-item');
+            DeleteHouse(id);
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *--------- Обработчик нажатия кнопки удаления счетчика ----------*
+        function DeleteItemCount(el) {
+            // получаем id удаляемого объекта
+            var id = $(el).attr('data-item');
+            DeleteCount(id);
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+
+        //*--------------------------- ФУНКЦИИ РАБОТЫ С ДОМОМ --------------------------*
+
+
+
+
+        // *-------------- Добавление нового дома в систему ----------------*
+        function AddHouse() {
+            // получаем значения для добавляемого дома
+            var house = {
+                Address: $('#addAddress').val(),
+                CounterOfWaterId: $('#addIDCounter').val(),
+            };
+            // отправляем полученные значения на сервер
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/AddHouse',
+                type: 'POST',
+                data: JSON.stringify(house),
+                contentType: "application/json;charset=utf-8",
+                success: function () {
+                    GetMinHouse();
+                    GetMaxHouse();
+                    GetAllHouses();
+                    GetNullCounts();
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *------------------ Удаление дома из системы --------------------*
+        function DeleteHouse(id) {
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/DeleteHouse/' + id,
+                type: 'DELETE',
+                data: JSON.stringify(),
+                contentType: "application/json;charset=utf-8",
+                success: function () {
+                    GetAllHouses();
+                    GetMinHouse();
+                    GetMaxHouse();
+                    GetNullCounts();
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *-------------------- Редактирование дома  ----------------------*
+        function EditHouse() {
+            var id = $('#editIdHouse').val() // id дома необходим для обращения к API.
+            // получаем новые значения для редактируемого дома
+            var house = {
+                Id: $('#editIdHouse').val(),
+                Address: $('#editAddress').val(),
+                CounterOfWaterId: $('#editIDCounter').val()
+            };
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/EditHouse/' + id,
+                type: 'PUT',
+                data: JSON.stringify(house),
+                contentType: "application/json;charset=utf-8",
+                success: function () {
+                    GetMinHouse()
+                    GetMaxHouse();
+                    GetAllHouses();
+                    GetNullCounts()
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *------------------ Запрос дома на редактирование ---------------*
+        function GetHouseEdit(id) {
+            // Запрос дома методом с помощью id
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/GetHouse/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    ShowHouseEdit(data);
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *-- Вывод данных редактируемого дома в поля для редактирования --*
+        function ShowHouseEdit(house) {
+            if (house != null) {
+                $("#editIdHouse").val(house.Id);
+                $("#editAddress").val(house.Address);
+                $("#editIDCounter").val(house.CounterOfWaterId);
+            }
+            else {
+                alert("Такой дом не существует");
+            }
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+
+        //*--------------------------- ФУНКЦИИ РАБОТЫ С СЧЕТЧИКАМИ --------------------------*
+
+
+
+
+        // *-Вывод данных редактируемого счетчика в поля для редактирования-*
+        function ShowCountEdit(count) {
+            if (count != null) {    // Проверку можно опустить
+                $("#editIdCount").val(count.Id);
+                $("#editSerialNumber").val(count.SerialNumber);
+                $("#editReadings").val(count.Readings);
+            }
+            else {
+                alert("Такой дом не существует");
+            }
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *------------------ Редактирование cчетчика ---------------------*
+        function EditCount() {
+            var id = $('#editIdCount').val() 
+            if (id != null) { // Не обязательная проверка
+                // получаем новые значения для редактируемого счетчика
+                var count = {
+                    Id: $('#editIdCount').val(),
+                    SerialNumber: $('#editSerialNumber').val(),
+                    Readings: $('#editReadings').val()
+                };
+                // Отправляем запрос
+                $.ajax({
+                    url: 'http://litvinov.redirectme.net:50349/api/values/EditCount/' + id,
+                    type: 'PUT',
+                    data: JSON.stringify(count),
+                    contentType: "application/json;charset=utf-8",
+                    success: function () {
+                        GetMinHouse();
+                        GetMaxHouse();
+                        GetAllHouses();
+                        GetNullCounts();
+                    },
+                    error: function (x, y, z) {
+                        alert(x + '\n' + y + '\n' + z);
+                    }
+                });
+            }
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *--------------- Запрос счетчика на редактирование --------------*
+        function GetCountEdit(id) {
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/GetCount/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    ShowCountEdit(data);
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *------------ Добавление нового счетчика в систему --------------*
+        function AddCount() {
+            // получаем значения для добавляемого счетчика
+            var counter = {
+                SerialNumber: $('#addSerialNumber').val(),
+                Readings: $('#addReadings').val(),
+            };
+            // отправляем полученные значения
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/AddCounter',
+                type: 'POST',
+                data: JSON.stringify(counter),
+                contentType: "application/json;charset=utf-8",
+                success: function () {
+                    GetNullCounts();
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *--------- Получение списка не подключенных счетчиков -----------*
+        function GetNullCounts() {
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/GetCountersNull',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    WriteResponseNullCounts(data);
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *-------- Удаление не подключенного счетчика из системы ----------*
+        function DeleteCount(id) {
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/DeleteCount/' + id,
+                type: 'DELETE',
+                contentType: "application/json;charset=utf-8",
+                success: function () {
+                    GetNullCounts();
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End-----------------------------------*
+
+
+
+
+        //*--------------------- ФУНКЦИИ РАБОТАЮЩИЕ АСИНХРОННО НА СЕРВЕРЕ -------------------*
+
+
+
+
+        // *--------- Получение дома с минимальными показателями -----------*
+        function GetMinHouse() {
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/GetMinHouse',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    WriteResponseMinHouse(data);
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *--------- Получение дома с максимальными показателями ----------*
+        function GetMaxHouse() {
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/GetMaxHouse',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    WriteResponseMaxHouse(data);
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *---------------------------End----------------------------------*
+
+
+
+        // *--------- Получение списка всех домов по ajax-запросу ----------*
+        function GetAllHouses() {
+            $.ajax({
+                url: 'http://litvinov.redirectme.net:50349/api/values/GetHouses',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    WriteResponseHouses(data);
+                },
+                error: function (x, y, z) {
+                    alert(x + '\n' + y + '\n' + z);
+                }
+            });
+        }
+        // *--------------------------End-----------------------------------*
+
+
+
+
+
+        //*--------------------- ФУНКЦИИ РАБОТАЮЩИЕ АСИНХРОННО НА СЕРВЕРЕ -------------------*
+
+
+
+
+        // *----- Вывод данных минимально потребившего дома на экран -------*
+        function WriteResponseMinHouse(house) {
+            var strResult = "<div class='list_green'><table><caption>Дом потребивший min кол-во воды</caption><th>ID дома в системе</th><th>Адрес дома</th><th>ID счетчика</th><th>Серийный номер счетчика</th><th>Показания счетчика</th>";
+
+            if (house != null) {// Не обязательная проверка
+                strResult += "<tr><td>" + house.Id +
+                    "</td><td> " + house.Address +
+                    "</td><td>" + house.CounterOfWater.Id +
+                    "</td><td>" + house.CounterOfWater.SerialNumber +
+                    "</td><td>" + house.CounterOfWater.Readings + "</td>";
+                strResult += "</table></div>";
+                $("#tableBlock3").html(strResult);
+            }
+        }
+        // *--------------------------End-----------------------------------*
+
+
+
+        // *----- Вывод данных максимально потребившего дома на экран ------*
+        function WriteResponseMaxHouse(house) {
+            var strResult = "<div class='list_red'><table><caption>Дом потребивший max кол-во воды</caption><th>ID дома в системе</th><th>Адрес дома</th><th>ID счетчика</th><th>Серийный номер счетчика</th><th>Показания счетчика</th>";
+
+            if (house != null) {// Не обязательная проверка
+                strResult += "<tr><td>" + house.Id +
+                    "</td><td> " + house.Address +
+                    "</td><td>" + house.CounterOfWater.Id +
+                    "</td><td>" + house.CounterOfWater.SerialNumber +
+                    "</td><td>" + house.CounterOfWater.Readings + "</td>";
+                strResult += "</table></div>";
+                $("#tableBlock2").html(strResult);
+            }
+        }
+        // *--------------------------End-----------------------------------*
+
+
+
+        // *-------------Вывод данных по всем домам на экран----------------*
+        function WriteResponseHouses(houses) {
+            var strResult = "<div class='list'><table><caption>Список всех домов</caption><th>ID дома в системе</th><th>Адрес дома</th><th>ID счетчика</th><th>Серийный номер счетчика</th><th>Показания счетчика</th>";
+
+            $.each(houses, function (index, house) {
+
+                // Некоторые дома приходят на отрисовку без данных по счетчикам.
+                // Поэтому принято решение создать пустые поля в случае с домами, в которых еще не подключены счетчики.
+                if (!house.CounterOfWater) {
+                    houseCounterOfWaterId = '',
+                        houseCounterOfWaterSerialNumber = '',
+                        houseCounterOfWaterReadings = ''
+                }
+                else {
+                    houseCounterOfWaterId = house.CounterOfWater.Id,
+                        houseCounterOfWaterSerialNumber = house.CounterOfWater.SerialNumber,
+                        houseCounterOfWaterReadings = house.CounterOfWater.Readings
+                }
+
+                strResult += "<tr class='entry'><td>" + house.Id +
+                    "</td><td> " + house.Address +
+                    "</td><td>" + houseCounterOfWaterId +
+                    "</td><td>" + houseCounterOfWaterSerialNumber +
+                    "</td><td>" + houseCounterOfWaterReadings +
+                    '</td><td> <button type="button" class="buttonTable" data-toggle="modal" data-target="#editHouseBlock" data-item="' + house.Id + '"   onclick="EditItem(this);" >Редактировать</button >' +
+                    "<td><button type='button' class='buttonTable' id='delItemHouse' data-item='" + house.Id + "' onclick='DeleteItem(this);' >Удалить</button></td>";
+
+                if (houseCounterOfWaterId == '') {
+                    // Не показываем кнопку для ввода значений счетчика если счетчик не установлен.
+                    strResult += "<td></td></tr>"
+                }
+                else {
+                    strResult += '</td><td> <button type="button" class="buttonTable" data-toggle="modal" data-target="#editCountBlock" data-item="' + houseCounterOfWaterId + '"   onclick="EditItemCount(this);" >Внести показания</button ></td></tr>';
+                }
+
+            });
+            strResult += "</table></div>";
+            $("#tableBlock1").html(strResult);
+        }
+        // *--------------------------End-----------------------------------*
+
+
+
+        // *---------- Вывод данных не подключенных счетчиков --------------*
+        function WriteResponseNullCounts(counts) {
+            var strResult = "<div class='list'><table><caption>Список не подключенных счетчиков</caption><th>ID счетчика</th><th>Серийный номер</th><th>Начальные показания</th>";
+
+            $.each(counts, function (index, count) {
+
+                if (count.Readings == null) { count.Readings = '' }
+                // Некоторые счетчики не проинициализированы поэтому присваиваем нулевым полям значение пустой строки.
+
+                strResult += "<tr class='entry'><td>" + count.Id +
+                    "</td><td> " + count.SerialNumber +
+                    "</td><td>" + count.Readings + "</td>" +
+                    '</td><td> <button type="button" class="buttonTable" data-toggle="modal" data-target="#editCountBlock" data-item="' + count.Id + '"   onclick="EditItemCount(this);" >Редактировать</button >' +
+                    "<td><button type='button' class='buttonTable' id='delItemCount' data-item='" + count.Id + "' onclick='DeleteItemCount(this);' >Удалить</button></td></tr>";
+            });
+            strResult += "</table></div>";
+            $("#tableBlock4").html(strResult);
+        }
+            // *--------------------------End-------------------------------*
+
+
+
+
+        //*----- ДООЛНИТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ ПРОВЕРКИ ВВОДА НА КЛИЕНТЕ -----*
+
+
+
+
+        //*---Функция проверяет вводимые значения при помощи регулярных выражений и ajax---*
+        function check() {
+            adress = $("#addAddress").val();
+            var expadress = /^[a-zа-яA-ZА-Я]{1}[#.0-9a-zа-яA-ZА-Я\s,-]+$/i;
+            var resadress = adress.search(expadress);
+
+            if (resadress == -1) {
+                $("#addAddress").next().hide().text("Не корректно!").css("color=black", "snow").fadeIn(400);
+                $("#addAddress").val("");
+                adressStat = 0;
+                buttonOnAndOff();
+            }
+            else {
+                $.ajax({
+                    url: 'http://litvinov.redirectme.net:50349/api/values/GetHouses',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (houses) {
+                        $.each(houses, function (index, house) {
+                            if (adress == house.Address) {
+                                $("#addAddress").next().text("Уже присутствует!").css("color=black", "snow").fadeIn(400);
+                                $("#addAddress").val("");
+                                adressStat = 0;
+                                buttonOnAndOff();
+                            }
+                            else {
+                                $("#addAddress").removeClass().addClass("inp");
+                                $("#addAddress").next().text("");
+                                adressStat = 1;
+                                buttonOnAndOff();
+                            }
+                        })
+                    }
+                });
+            }
+            
+        }
+        // *--------------------------End-------------------------------*
+
+
+                
+        //*----- Функция управляющая активностью кнопки сохранения -----*
+        function buttonOnAndOff() {
+            if (adressStat == 1)
+                $("#addHouse").removeAttr("disabled").css("background", "#65b07d");
+            else
+                $("#addHouse").attr("disabled", "disabled").css("background", "#6a6f8a");
+        }
+        // *--------------------------End-------------------------------*
+
+
+
+
+    </script>
+}

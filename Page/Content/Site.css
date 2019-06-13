@@ -1,0 +1,210 @@
+﻿body {
+    background: url(background4.png);
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+p {
+    color: white;
+}
+footer p {
+        color: black;
+    }
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+
+/*--------------------------- Style by Ilya ---------------------------*/
+
+/*------------------ Стили для модального окна ------------------*/
+.modal-open
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    text-align: left;
+}
+
+.inp {
+    width: 280px;
+}
+
+.tableEdit {
+    width: 100%;
+}
+
+/*--- Стили для кнопок ---*/
+.buttonMenu {
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    padding: .8em 1em calc(.8em + 3px);
+    border-radius: 3px;
+    background: rgba(83, 179, 129, 0.88);
+    box-shadow: 0 -3px rgb(53,167,110) inset;
+    transition: 0.2s;
+    width: 180px;
+    height: 35px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.buttonMenu:hover {
+        background: rgba(63, 156, 108, 0.88);
+    }
+
+.buttonMenu:active {
+        background: rgb(33,147,90);
+        box-shadow: 0 3px rgb(33,147,90) inset;
+    }
+
+.buttonTable {
+    color: #fff; /* цвет текста */
+    text-decoration: none; /* убирать подчёркивание у ссылок */
+    user-select: none; /* убирать выделение текста */
+    background: rgb(99, 147, 189); /* фон кнопки */
+    padding: .7em 1.5em; /* отступ от текста */
+    outline: none; /* убирать контур в Mozilla */
+    font-size: 10px;
+    vertical-align: middle;
+    width: 130px;
+    height: 30px;
+}
+
+.buttonTable:hover {
+        background: rgb(232, 154, 91);
+    }
+
+.buttonTable:active {
+        background: rgb(229, 114, 68);
+    }
+
+/*--------- Задаем отступ перед первым элементом тела -----------*/
+.firstBlock {
+    margin-top: 15%;
+}
+
+/*------------------ Стили для основных таблиц ------------------*/
+.list, .list_red, .list_green {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+/*--- Стандартная таблица ---*/
+.tableEdit input{
+    text-align: left;
+}
+
+
+th, td:first-child {
+    background: #AFCDE7;
+    color: black;
+    padding: 10px 20px;
+}
+
+div.list caption {
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+}
+
+#tr {
+    background: #AFCDE7;
+    color: black;
+    padding: 10px 20px;
+}
+/*--- Подсветка ---*/
+.entry:hover td {
+    background-color: #adcdea;
+}
+td {
+    background: #D8E6F3;
+    padding: 5px;
+}
+
+/*----- Зеленая таблица -----*/
+div.list_green th, div.list_green td:first-child {
+    background: #c9e7af;
+    color: black;
+    padding: 10px 20px;
+}
+
+div.list_green caption {
+    font-size: 14px;
+    color: #619c22;
+    font-weight: bold;
+}
+
+div.list_green td {
+    background: #e3f3d8;
+    padding: 5px;
+}
+
+/*----- Красная таблица -----*/
+div.list_red th, div.list_red td:first-child {
+    background: #e7afaf;
+    color: black;
+    padding: 10px 20px;
+}
+
+div.list_red caption {
+    font-size: 14px;
+    color: #d62727;
+    font-weight: bold;
+}
+
+div.list_red td {
+    background: #f3d8d8;
+    padding: 5px;
+}
+
+th, td {
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    border-color: white;
+}
+
+th:first-child, td:first-child {
+    text-align: left;
+}
+
+/*--------------------- Style by Ilya four general title ----------------*/
+.titleRAS {
+    margin: 0;
+    color: #fff;
+
+    text-shadow:0 1px 0 #ccc,
+                0 2px 0 #c9c9c9,
+                0 3px 0 #bbb,
+                0 4px 0 #b9b9b9,
+                0 5px 0 #aaa,
+                0 6px 1px rgba(0,0,0,.1),
+                0 0 5px rgba(0,0,0,.1),
+                0 1px 3px rgba(0,0,0,.3),
+                0 3px 5px rgba(0,0,0,.2),
+                0 5px 10px rgba(0,0,0,.25),
+                0 10px 10px rgba(0,0,0,.2),
+                0 20px 20px rgba(0,0,0,.15);
+}
